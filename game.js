@@ -1,49 +1,67 @@
-
-const Player=function(symbol){
-  this.symbol=symbol;
-  this.playerMove=[];
+const Player = function(name,symbol) {
+  this.playerName=name;
+  this.symbol = symbol;
+  this.playerMoves = [];
 }
-const Game=function(){
-  this.winCondition=[[1,2,3],[4,5,6],[7,8,9],[1,5,9],[2,6,8],[],[],[]]
-  this.players=[ new Player('X'),new Player('O')];
-  this.playersMoves=[];
+const Game = function() {
+  this.winCondition = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [1, 5, 9],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 4, 7],
+    [3, 5, 7]
+  ]
+  this.players = [new Player('Player1','X'), new Player('Player2','O')];
+  this.playersMoves = [];
 }
 
-Game.prototype={
-
-  decidePlayerTurn:function(){
-    if (this.playersMoves.length%2==0) {
+Game.prototype = {
+  decidePlayerTurn: function() {
+    if (this.playersMoves.length % 2 == 0) {
       return this.players[0];
-    }else{
+    } else {
       return this.players[1];
     }
   },
 
-  getSymbolOfPlayer:function(){
-    let player=this.decidePlayerTurn();
+  getSymbolOfPlayer: function() {
+    let player = this.decidePlayerTurn();
     return player.symbol;
   },
 
-  addPlayersMoves:function(number){
+  getNameOfPlayer:function(player){
+    return player.name;
+  },
+
+  addPlayersMoves: function(number) {
     if (!this.isMoveAlreadyMade(number)) {
       this.playersMoves.push(number);
     }
-    player=this.decidePlayerTurn();
-    player.playerMove.push(number);
+    player = this.decidePlayerTurn();
+    player.playerMoves.push(number);
   },
 
-  isMoveAlreadyMade:function(number){
+  isMoveAlreadyMade: function(number) {
     return this.playersMoves.includes(number);
   },
 
-  isSubset:function(){
-
+  isSubset: function(subset, superset) {
+    return subset.every(function(element) {
+      return superset.includes(element);
+    });
   },
 
-  hasWon:function(){
-    
+  isMatchDraw:function(){
+    return this.playersMoves.length>=9
+
   }
 
-
-
+  hasWon: function(player) {
+    return this.winCondition.some((subset) => {
+      return this.isSubset(subset, player.playerMoves);
+    });
+  }
 }
