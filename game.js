@@ -1,5 +1,5 @@
 const Player = function(name,symbol) {
-  this.playerName=name;
+  this.name=name;
   this.symbol = symbol;
   this.playerMoves = [];
 }
@@ -14,16 +14,23 @@ const Game = function() {
     [1, 4, 7],
     [3, 5, 7]
   ]
-  this.players = [new Player('Player1','X'), new Player('Player2','O')];
+  this.players = [new Player('Player1','O'), new Player('Player2','X')];
   this.playersMoves = [];
 }
+
+Player.prototype={
+  isMoveAlreadyMade:function(move){
+    return this.playerMoves.includes(move);
+  }
+}
+
 
 Game.prototype = {
   decidePlayerTurn: function() {
     if (this.playersMoves.length % 2 == 0) {
-      return this.players[0];
-    } else {
       return this.players[1];
+    } else {
+      return this.players[0];
     }
   },
 
@@ -36,15 +43,18 @@ Game.prototype = {
     return player.name;
   },
 
-  addPlayersMoves: function(number) {
-    if (!this.isMoveAlreadyMade(number)) {
-      this.playersMoves.push(number);
+  addPlayersMoves: function(move) {
+    if (!this.isMoveAlreadyMadeInGame(move)) {
+      console.log(move);
+      this.playersMoves.push(move);
     }
     player = this.decidePlayerTurn();
-    player.playerMoves.push(number);
+    if (!player.isMoveAlreadyMade(move)) {
+      player.playerMoves.push(move);
+    }
   },
 
-  isMoveAlreadyMade: function(number) {
+  isMoveAlreadyMadeInGame:function(number) {
     return this.playersMoves.includes(number);
   },
 
@@ -56,8 +66,7 @@ Game.prototype = {
 
   isMatchDraw:function(){
     return this.playersMoves.length>=9
-
-  }
+  },
 
   hasWon: function(player) {
     return this.winCondition.some((subset) => {
