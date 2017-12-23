@@ -5,15 +5,17 @@ let startGame = function() {
 }
 let loadGame = function() {
   let cell = event.target.id;
-  document.getElementById(cell).innerText = game.getSymbolOfPlayer();
-  game.addPlayerMoves(+cell);
-  game.addBothPlayersMoves(+cell);
-  getActionBasedOnGameStatus();
+  let player=game.decidePlayerTurn();
+  console.log(player);
+  if (!game.isMoveAlreadyMadeInGame(+cell)) {
+    document.getElementById(cell).innerText = game.getSymbolOfPlayer(player);
+  }
+  game.addAllPlayersMoves(+cell);
+  getActionBasedOnGameStatus(player);
 }
 
-let getActionBasedOnGameStatus = function() {
-  if (game.hasWon(player)) {
-    player = game.decidePlayerTurn();
+let getActionBasedOnGameStatus = function(player) {
+  if(player.hasWon()){
     return displayStatusForWinning(player);
   }
   if (game.isMatchDraw()) {
