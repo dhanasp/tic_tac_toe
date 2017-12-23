@@ -43,17 +43,6 @@ Game.prototype = {
     return player.name;
   },
 
-  addPlayersMoves: function(move) {
-    if (!this.isMoveAlreadyMadeInGame(move)) {
-      console.log(move);
-      this.playersMoves.push(move);
-    }
-    player = this.decidePlayerTurn();
-    if (!player.isMoveAlreadyMade(move)) {
-      player.playerMoves.push(move);
-    }
-  },
-
   isMoveAlreadyMadeInGame:function(number) {
     return this.playersMoves.includes(number);
   },

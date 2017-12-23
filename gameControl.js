@@ -28,7 +28,7 @@ let getActionBasedOnGameStatus = function() {
 
 displayStatusForWinning = function(player) {
   let gameStatus = document.getElementById('gameStatus');
-  gameStatus.innerText = 'winner is ' + player.name;
+  gameStatus.innerText = 'Winner is ' + player.name;
   stopGame();
 }
 
