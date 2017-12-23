@@ -3,6 +3,17 @@ const Player = function(name,symbol) {
   this.symbol = symbol;
   this.playerMoves = [];
 }
+
+Player.prototype={
+  isMoveAlreadyMade:function(move){
+    return this.playerMoves.includes(move);
+  },
+  addMove:function(move){
+    if (!player.isMoveAlreadyMade(move)) {
+      player.playerMoves.push(move);
+    }
+  }
+}
 const Game = function() {
   this.winCondition = [
     [1, 2, 3],
@@ -18,19 +29,15 @@ const Game = function() {
   this.playersMoves = [];
 }
 
-Player.prototype={
-  isMoveAlreadyMade:function(move){
-    return this.playerMoves.includes(move);
-  }
-}
 
 
 Game.prototype = {
   decidePlayerTurn: function() {
+    console.log(this.playersMoves.length%2);
     if (this.playersMoves.length % 2 == 0) {
-      return this.players[1];
-    } else {
       return this.players[0];
+    } else {
+      return this.players[1];
     }
   },
 
@@ -45,6 +52,17 @@ Game.prototype = {
 
   isMoveAlreadyMadeInGame:function(number) {
     return this.playersMoves.includes(number);
+  },
+
+  addPlayerMoves:function(move){
+    player = game.decidePlayerTurn();
+    player.addMove(move);
+  },
+
+  addBothPlayersMoves:function(move){
+    if (!game.isMoveAlreadyMadeInGame(move)) {
+      game.playersMoves.push(move);
+    }
   },
 
   isSubset: function(subset, superset) {

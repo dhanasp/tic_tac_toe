@@ -5,20 +5,15 @@ let startGame = function() {
 }
 let loadGame = function() {
   let cell = event.target.id;
-  if (!game.isMoveAlreadyMadeInGame(+cell)) {
-    game.playersMoves.push(+cell);
-    document.getElementById(cell).innerText = game.getSymbolOfPlayer();
-  }
-  player = game.decidePlayerTurn();
-  if (!player.isMoveAlreadyMade(+cell)) {
-    player.playerMoves.push(+cell);
-  }
+  document.getElementById(cell).innerText = game.getSymbolOfPlayer();
+  game.addPlayerMoves(+cell);
+  game.addBothPlayersMoves(+cell);
   getActionBasedOnGameStatus();
 }
 
 let getActionBasedOnGameStatus = function() {
-  player = game.decidePlayerTurn();
   if (game.hasWon(player)) {
+    player = game.decidePlayerTurn();
     return displayStatusForWinning(player);
   }
   if (game.isMatchDraw()) {
